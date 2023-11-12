@@ -1,6 +1,7 @@
 package model
 
 import (
+	"github.com/yaswanthsaivendra/prod_mang/database"
 	"gorm.io/gorm"
 )
 
@@ -14,6 +15,16 @@ type Product struct {
 }
 
 type Image struct {
+	gorm.Model
 	ProductImage           string `gorm:"not null" json:"product_image"`
 	CompressedProductImage string `json:"compressed_product_image"`
+	ProductID              uint
+}
+
+func (product *Product) Save() (*Product, error) {
+	err := database.Database.Create(&product).Error
+	if err != nil {
+		return &Product{}, err
+	}
+	return product, nil
 }

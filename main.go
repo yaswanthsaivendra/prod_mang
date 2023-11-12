@@ -41,6 +41,9 @@ func serveApplication() {
 
 	protectedRoutes := router.Group("/api")
 	protectedRoutes.Use(middleware.JWTAuthMiddleware())
+	router.MaxMultipartMemory = 8 << 20
+	protectedRoutes.POST("/product", handlers.HandleProductUpload)
+	protectedRoutes.GET("/product", handlers.GetAllProductsOfUser)
 
 	router.Run(":8000")
 	fmt.Println("server running on port 8000")
