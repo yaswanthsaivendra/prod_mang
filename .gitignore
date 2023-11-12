@@ -23,3 +23,5 @@ go.work
 #do not commit local files
 
 *.local
+product_images/
+compressed_product_images/

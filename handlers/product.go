@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/yaswanthsaivendra/prod_mang/database"
 	"github.com/yaswanthsaivendra/prod_mang/helper"
 	"github.com/yaswanthsaivendra/prod_mang/model"
 )
@@ -44,14 +45,14 @@ func HandleProductUpload(c *gin.Context) {
 
 	newProduct.UserID = user.ID
 
-	uploadPath := "../static/product_images/"
+	uploadPath := "./static/product_images/"
 
 	//uploading all images
 	for i, image := range imageFiles {
 
-		filename := filepath.Join(uploadPath, image.Filename)
+		filepath := filepath.Join(uploadPath, image.Filename)
 
-		if err := c.SaveUploadedFile(image, filename); err != nil {
+		if err := c.SaveUploadedFile(image, filepath); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Error saving file %d", i)})
 			return
 		}
@@ -60,7 +61,9 @@ func HandleProductUpload(c *gin.Context) {
 			ProductImage: image.Filename,
 			ProductID:    newProduct.ID,
 		}
+
 		newProduct.Images = append(newProduct.Images, newImage)
+
 	}
 
 	// creating the product
@@ -82,5 +85,11 @@ func GetAllProductsOfUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	if err := database.Database.Preload("Images").Find(&user.Products).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{"data": user.Products})
 }
