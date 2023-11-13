@@ -8,6 +8,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/yaswanthsaivendra/prod_mang/database"
 	"github.com/yaswanthsaivendra/prod_mang/handlers"
+
 	"github.com/yaswanthsaivendra/prod_mang/middleware"
 	"github.com/yaswanthsaivendra/prod_mang/model"
 )
@@ -16,6 +17,7 @@ func main() {
 	loadEnv()
 	loadDatabase()
 	serveApplication()
+
 }
 
 func loadEnv() {

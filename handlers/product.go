@@ -75,6 +75,9 @@ func HandleProductUpload(c *gin.Context) {
 		return
 	}
 
+	// trigger image compression
+	go helper.TriggerImagesCompression(&savedProduct.Images)
+
 	c.JSON(http.StatusCreated, gin.H{"data": savedProduct})
 }
 
