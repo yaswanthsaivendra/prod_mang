@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
+	"gorm.io/gorm"
+
 	"github.com/yaswanthsaivendra/prod_mang/database"
 	"github.com/yaswanthsaivendra/prod_mang/handlers"
 
@@ -14,27 +14,24 @@ import (
 )
 
 func main() {
-	loadEnv()
-	loadDatabase()
+	loadDB()
 	serveApplication()
 
 }
 
-func loadEnv() {
-	err := godotenv.Load(".env.local")
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-}
-
-func loadDatabase() {
-	database.Connect()
+func Migrate(db *gorm.DB) {
 	database.Database.AutoMigrate(&model.User{})
 	database.Database.AutoMigrate(&model.Product{})
 	database.Database.AutoMigrate(&model.Image{})
 }
 
+func loadDB() {
+	db := database.InitDB()
+	Migrate(db)
+}
+
 func serveApplication() {
+
 	router := gin.Default()
 
 	publicRoutes := router.Group("/auth")

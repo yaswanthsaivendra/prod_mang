@@ -18,8 +18,11 @@ func Register(c *gin.Context) {
 	}
 
 	user := model.User{
-		Username: input.Username,
-		Password: input.Password,
+		Username:  input.Username,
+		Password:  input.Password,
+		Mobile:    input.Mobile,
+		Latitude:  input.Latitude,
+		Longitude: input.Longitude,
 	}
 
 	savedUser, err := user.Save()

@@ -1,15 +1,25 @@
 # prod_mang
 
-## How to run the project
+## tech stack
+framework : gin
+database : sqlite (file)
 
-1. clone the repo
-2. make a .env.local using .env file
-```
-cp .env .env.local
-```
-3. create a postgres db using your local installation of postgres
-4. Replace the db creds in .env.local file
-5. Run the project
+## run and test
 ```
 go run main.go
+go test ./...
+
 ```
+
+
+## Implementations
+- Models created 
+  - User
+  - Product
+  - Image
+
+- Image Analysis 
+  - Goroutines make the image compression process isolated from the user interaction with the APIs
+  - images are compressed and new file names are stored in <i>compressed_product_images</i> field
+
+
